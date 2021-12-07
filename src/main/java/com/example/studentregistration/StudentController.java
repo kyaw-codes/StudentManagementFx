@@ -51,10 +51,22 @@ public class StudentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnAddStudent.setOnAction(new StudentController()::onAddStudentClick);
-        btnDeleteStudent.setOnAction(new StudentController()::onDeleteStudentClick);
-        btnEditStudent.setOnAction(new StudentController()::onEditStudentClick);
-        btnAddClassroom.setOnAction(new StudentController()::showPopUp);
+        btnAddStudent.setOnAction(e -> onAddStudentClick());
+        btnDeleteStudent.setOnAction(e -> onDeleteStudentClick());
+        btnEditStudent.setOnAction(e -> onEditStudentClick());
+
+        btnAddClassroom.setOnAction(event -> {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(ClassroomController.class.getResource("classroom-view.fxml"));
+
+            try {
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         // Prepare data
         cmbClassroom.getItems().addAll(store.classrooms);
@@ -62,28 +74,22 @@ public class StudentController implements Initializable {
         tableView.getItems().addAll(store.students);
     }
 
-    private void showPopUp(ActionEvent event) {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(ClassroomController.class.getResource("classroom-view.fxml"));
+    private void onAddStudentClick() {
+        Student student = new Student();
+        student.setName(txtName.getText());
+        student.setNrc(txtNRC.getText());
+        student.setClassroom(cmbClassroom.getSelectionModel().getSelectedItem());
+        student.setDob(datePicker.getValue());
 
-        try {
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        store.students.add(student);
+        tableView.getItems().add(student);
     }
 
-    private void onAddStudentClick(ActionEvent event) {
-        System.out.println("Add student");
-    }
-
-    private void onEditStudentClick(ActionEvent event) {
+    private void onEditStudentClick() {
         System.out.println("Edit Student");
     }
 
-    private void onDeleteStudentClick(ActionEvent event) {
+    private void onDeleteStudentClick() {
         System.out.println("Delete Student");
     }
 }

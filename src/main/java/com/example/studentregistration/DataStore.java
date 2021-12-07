@@ -5,8 +5,8 @@ import java.util.List;
 
 public class DataStore {
 
-    List<Classroom> classrooms = new ArrayList<>();
-    List<Student> students = new ArrayList<>();
+    public List<Classroom> classrooms = new ArrayList<>();
+    public List<Student> students = new ArrayList<>();
 
     private static DataStore instance;
 
